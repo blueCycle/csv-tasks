@@ -49,12 +49,12 @@ if len(unique_contains_values) > 0:
     with open(output_contains_values, 'w') as output_file:
         for value in unique_contains_values:
             output_file.write(value + "\n")
-    print("Number of unique values in column B for contains-values file:", len(unique_contains_values))
+    print(f"Number of unique values in column {record_column_index} for {output_contains_values}:", len(unique_contains_values))
     print("Output file created:", os.path.abspath(output_contains_values))
     
 if len(unique_does_not_contain_values) > 0:
     with open(output_does_not_contain_values, 'w') as output_file:
         for value in unique_does_not_contain_values:
             output_file.write(value + "\n")
-    print("Number of unique values in column B for does-not-contains-values file:", len(unique_does_not_contain_values))
+    print(f"Number of unique values in column {record_column_index} for {output_does_not_contain_values}:", len(unique_does_not_contain_values))
     print("Output file created:", os.path.abspath(output_does_not_contain_values))

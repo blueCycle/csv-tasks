@@ -1,0 +1,60 @@
+"""
+This Python script reads a CSV file and determines whether a specified value is present in a specified column.
+For each case, it records unique values from a specified column to an output text file and prints
+the number of unique values.
+
+Output filenames are the same as the input filename with "-contains-value" or "-does-not-contains-value"
+appended to the end.
+
+Input:
+- CSV file with the filename specified in the input_filename variable in the same directory as the script.
+- Value to search for specified in the search_value variable.
+- Column to search for the search_value specified in the search_column variable.
+- Column to record unique values from specified in the record_column variable.
+
+Output:
+- Text file with unique values of the record_column for rows where search_column contains the search_value.
+- Text file with unique values of the record_column for rows where search_column does not contain the search_value.
+"""
+
+import csv
+import os
+
+# Define input and output file names
+input_filename = "input-file.csv"
+output_contains_value = input_filename.split('.')[0] + "-contains-value.txt"
+output_does_not_contain_value = input_filename.split('.')[0] + "-does-not-contains-value.txt"
+
+# Define the search value and the columns to search and record
+search_value = "g."
+search_column_index = 5 # Index of the F column (0-based)
+record_column_index = 1 # Index of the B column (0-based)
+
+# Define sets to store unique values of record_column
+unique_contains_value = set()
+unique_does_not_contain_value = set()
+
+# Open the input CSV file and read its contents
+with open(input_filename, 'r') as input_file:
+    reader = csv.reader(input_file)
+    headers = next(reader) # Get the header row to map column names to indices
+    for row in reader:
+        if search_value in row[search_column_index]: # If search_column contains the search_value.
+            unique_contains_value.add(row[record_column_index]) # Add the value in record_column to the set of unique values
+        else:
+            unique_does_not_contain_value.add(row[record_column_index]) # Add the value in record_column to the set of unique values
+
+# Write unique values of record_column to output files
+if len(unique_contains_value) > 0:
+    with open(output_contains_value, 'w') as output_file:
+        for value in unique_contains_value:
+            output_file.write(value + "\n")
+    print("Number of unique values in column B for contains-value file:", len(unique_contains_value))
+    print("Output file created:", os.path.abspath(output_contains_value))
+    
+if len(unique_does_not_contain_value) > 0:
+    with open(output_does_not_contain_value, 'w') as output_file:
+        for value in unique_does_not_contain_value:
+            output_file.write(value + "\n")
+    print("Number of unique values in column B for does-not-contains-value file:", len(unique_does_not_contain_value))
+    print("Output file created:", os.path.abspath(output_does_not_contain_value))
